@@ -10,7 +10,7 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>Au Register Forms by Colorlib</title>
+    <title>Input Feelings</title>
 
     <!-- Icons font CSS-->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -34,6 +34,9 @@
         #txtbox{
             width:100%;
         }
+        #mainTextArea{
+            margin:auto;
+        }
         
     </style>
 </head>
@@ -47,7 +50,7 @@
 
                     <form method="POST" action="/text">
                         <div class="input-group">
-                            <textarea class="input--style-4" id = "mainTextArea" rows="7" cols="60" name="feeling"> </textarea>
+                            <textarea class="input--style-4" id = "mainTextArea" rows="7" cols="55" name="feeling"> </textarea>
                             <input type="hidden" name="email" value=<%=userInfo.Email %>>
                             <input type="hidden" name="emergency" value=<%=userInfo.Emergency %>>
                             <input type="hidden" name="phone" value=<%=userInfo.Phone %>>

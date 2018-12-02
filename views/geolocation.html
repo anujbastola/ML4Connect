@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Sending Emergency Email</title>
+
+    <!-- Icons font CSS-->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="css/main.css" rel="stylesheet" media="all">
+
+    <style type="text/css">
+    #separate{
+        position: relative;
+        float: right;
+    }
+    ul{
+        list-style: none;
+    }
+    #map{
+        height: 670px;
+        width: 100%;
+        margin:auto;
+        border: dotted 1px red;
+    }
+    #mybutton{
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+    }
+
+</style>
+</head>
+
+<body>
+
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <div id="map">
+
+                        </div>
+                    </div>
+                    <form method="POST" action="/sendemail">
+                        <div class="input-group">
+                            <button id="mybutton" class="btn btn--radius-2 btn--blue" type="submit" >Notify</button>
+                            <input type="hidden" name="lat" value="" id="lat">
+                            <input type="hidden" name="lng" value="" id="lng">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
+
+    <script>
+      var map, infoWindow;
+      var to_send_lat =0;
+      var to_send_lon=0;
+      
+
+      function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 40.712776, lng: -74.005974},
+            zoom: 18
+        });
+
+          infoWindow = new google.maps.InfoWindow;
+
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+              };
+
+              document.getElementById("lat").value = pos.lat;
+              document.getElementById("lng").value = pos.lng;
+
+              infoWindow.setPosition(pos);
+              infoWindow.setContent('Location found');
+              infoWindow.open(map);
+              map.setCenter(pos);
+
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+          } 
+          else {
+              handleLocationError(false, infoWindow, map.getCenter());
+          }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+          'Error: The Geolocation service failed.' :
+          'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+
+
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoiPyzJ0CShH_u8uSyZt-CqA_nok706Lc&callback=initMap"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->

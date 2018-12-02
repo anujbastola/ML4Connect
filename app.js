@@ -213,7 +213,7 @@ function callpython() {
 }
 
 app.post('/gethelp', (req, res) => {
-    res.sendFile(__dirname + '/views/geo.html');
+    res.sendFile(__dirname + '/views/geolocation.html');
 });
 
 
@@ -304,7 +304,7 @@ mongoose.connect('mongodb://yhack:yhack2018@ds131139.mlab.com:31139/yhack', (err
 app.post('/sendemail', (req, res) => {
 
     console.log("Lat is " + req.body.lat);
-    console.log("Lon is " + req.body.lon);
+    console.log("Lon is " + req.body.lng);
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -318,7 +318,7 @@ app.post('/sendemail', (req, res) => {
         from: 'ml4connect@gmail.com',
         to: 'anujbastola10@gmail.com',
         subject: 'Urgent! Need Help!',
-        text: 'Hi, Your friend is currently in a bad mental state. He/She is located at ' + req.body.lat + ' latitude and ' + req.body.lon + ' longitude.'
+        text: 'Hi, Your friend is currently in a bad mental state. He/She is located at ' + req.body.lat + ' latitude and ' + req.body.lng + ' longitude.'
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
