@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messenger</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <!-- <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script> -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
+
+        <style type="text/css">
+            h1{
+                text-align: center;
+            }
+
+
+            .jumbotron .messagebody{
+                width: 90%;
+                height: 20em;
+                background-color: white;
+                border-radius: 5px;
+                margin: auto;
+                overflow: scroll;
+            }
+
+            .messages{
+                border-radius: 4px;
+                width: 90%; 
+                padding: 6px 10px; 
+                margin: 5px 5px;
+            }
+
+            .messages.patient{
+                background-color: #B4CFEC;
+                float: left;
+            }
+
+            .messages.psychiatrist{
+                background-color: #FDEEF4;
+                float: right;
+            }
+
+            textarea.form-control{
+                width: 90%;
+                float: left;
+                margin-right: 10px;
+            }
+
+            button{
+                display: inline-block;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="header">Messenger</h1>
+            
+            <div class="jumbotron">
+                <div class="messagebody">
+
+                </div>
+            </div>
+            
+            <div class="jumbotron">
+                <br>
+                <textarea id = "message" class="form-control" placeholder="Your Message Here"></textarea>
+                <button id="send" class="btn btn-success">Send</button>
+            </div>
+        </div>
+        <script>
+            var socket = io();
+            
+            $(() => {
+                // $('textarea #message').on('keydown', (e)=>{
+                //     if(e.which == 13){
+                //         e.preventDefault();
+                //         sendMessage({name: $("#name").val(), message: $("#message").val(), type: $("#type").val()});
+                //     }
+                // });
+                $("#send").click(()=>{
+                    sendMessage({name: $("#name").val(), message: $("#message").val(), type: $("#type").val()});
+                })
+                getMessages();
+            })
+
+            socket.on('message', addMessages)
+
+            function addMessages(message){
+                $(".messagebody").append(`<p class="messages">  : ${message.message} </p>`);
+            }
+
+            function getMessages(){
+                $.get('http://localhost:3000/messages', (data) => {
+                data.forEach(addMessages);
+                })
+            }
+
+            function sendMessage(message){
+                $.post('http://localhost:3000/messages', message)
+            }
+
+        </script>
+    </body>
+</html>
