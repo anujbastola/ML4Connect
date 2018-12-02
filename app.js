@@ -186,11 +186,29 @@ app.post('/text', urlencodedParser, function (req, response) {
                                         else {
                                             var resultObj = res.rows;
                                             console.log(resultObj[0]);
-                                            if ( score < -0.3){
-                                                response.render('helpPage', {emergencyContact: userInfo.Emergency});
+                                            if (score < -0.3) {
+                                                response.render('helpPage', { emergencyContact: userInfo.Emergency });
                                             }
                                             else {
-                                                response.render('docList', { resultObj: resultObj[0]});                                                
+                                                const csvFilePath = "compare.csv";
+                                                var values = [];
+                                                console.log(csvFilePath);
+                                                csv()
+                                                    .fromFile(csvFilePath)
+                                                    .then((jsonObj) => {
+
+                                                        for (var i = 0; i < jsonObj.length; i++) {
+                                                            if (i == 0){
+
+                                                            }
+                                                            else{
+                                                                values.push((jsonObj[i]["speciality"]));
+                                                            }
+                                                        }
+                                                        console.log(values);
+                                                        response.render('docList', { resultObj: resultObj[0], values: values });
+                                                    });
+                                                
                                             }
                                         }
                                     });
@@ -249,13 +267,13 @@ app.post('/chat', (req, res) => {
     var type = req.body.type;
 
     console.log("Type is : " + type);
-    if ( type == "Psychiatrist"){
-        res.render("chat", {type: type});
-    }else{
+    if (type == "Psychiatrist") {
+        res.render("chat", { type: type });
+    } else {
         client.query("DROP TABLE IF EXISTS UserAssociateDoctor");
         client.query("DROP TABLE IF EXISTS Users");
         type = "Patient";
-        res.render('chat', {type: type});
+        res.render('chat', { type: type });
     }
 });
 
@@ -267,7 +285,8 @@ app.get('/messages', (req, res) => {
 
 app.get('/messages/:user', (req, res) => {
     var user = req.params.user
-    Message.find({ name: user }, (err, messages) => {3
+    Message.find({ name: user }, (err, messages) => {
+        3
         res.send(messages);
     });
 });
@@ -337,7 +356,5 @@ app.post('/sendemail', (req, res) => {
     });
 })
 
-
-
-var server = http.listen(3000);
+var server = app.listen(3000);
 console.log("App Listening to port 3000");
