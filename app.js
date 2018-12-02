@@ -244,15 +244,19 @@ var Message = mongoose.model('Message', {
     message: String
 })
 
-// app.get('/home', (req, res) =>{
-//     res.sendFile(__dirname+'/home.html');
-// })
 
-app.get('/chat', (req, res) => {
-    //res.render("index.ejs");
-    var type = "patient";
-    res.render("chat");
-    //res.render("chat", {type:'patient', name:'bob'});
+app.post('/chat', (req, res) => {
+    var type = req.body.type;
+
+    console.log("Type is : " + type);
+    if ( type == "Psychiatrist"){
+        res.render("chat", {type: type});
+    }else{
+        client.query("DROP TABLE IF EXISTS UserAssociateDoctor");
+        client.query("DROP TABLE IF EXISTS Users");
+        type = "Patient";
+        res.render('chat', {type: type});
+    }
 });
 
 app.get('/messages', (req, res) => {
@@ -326,6 +330,8 @@ app.post('/sendemail', (req, res) => {
             console.log(error);
         } else {
             console.log('Email sent: ' + info.response);
+            client.query("DROP TABLE IF EXISTS UserAssociateDoctor");
+            client.query("DROP TABLE IF EXISTS Users");
             res.end('<html><head></head><body>Email Sent!</body></html>');
         }
     });

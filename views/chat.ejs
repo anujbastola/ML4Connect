@@ -30,12 +30,12 @@
                 margin: 5px 5px;
             }
 
-            .messages.patient{
+            .messages.Patient{
                 background-color: #B4CFEC;
                 float: left;
             }
 
-            .messages.psychiatrist{
+            .messages.Psychiatrist{
                 background-color: #FDEEF4;
                 float: right;
             }
@@ -63,6 +63,7 @@
             </div>
             
             <div class="jumbotron">
+                <input id = "type" type="hidden" value= "<%=type %>" > 
                 <br>
                 <textarea id = "message" class="form-control" placeholder="Your Message Here"></textarea>
                 <button id="send" class="btn btn-success">Send</button>
@@ -79,7 +80,7 @@
                 //     }
                 // });
                 $("#send").click(()=>{
-                    sendMessage({name: $("#name").val(), message: $("#message").val(), type: $("#type").val()});
+                    sendMessage({message: $("#message").val(), type: $("#type").val()});
                 })
                 getMessages();
             })
@@ -87,7 +88,7 @@
             socket.on('message', addMessages)
 
             function addMessages(message){
-                $(".messagebody").append(`<p class="messages">  : ${message.message} </p>`);
+                $(".messagebody").append(`<p class="messages ${message.type}"> ${message.type} : ${message.message} </p>`);
             }
 
             function getMessages(){
